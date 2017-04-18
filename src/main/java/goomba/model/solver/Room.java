@@ -1,4 +1,4 @@
-package goomba.model;
+package goomba.model.solver;
 
 import java.util.Set;
 

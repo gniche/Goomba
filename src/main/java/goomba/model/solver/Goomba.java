@@ -1,6 +1,7 @@
-package goomba.model;
+package goomba.model.solver;
 
-import org.springframework.context.annotation.Bean;
+import goomba.model.VacuumResult;
+import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,14 +10,8 @@ import java.util.Set;
  * Goomba is your new favourite household pet, just set Goomba down in any room with some gentle direction
  * and in no time at all Goomba will clean up up you mess!
  */
+@Service
 public class Goomba {
-
-    static Goomba goomba = new Goomba();
-
-    @Bean
-    static Goomba getInstance(){
-        return goomba;
-    }
 
     /**
      * G

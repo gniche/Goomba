@@ -1,0 +1,1 @@
+{"errorCode":412,"message":"Some Fields are missing or wrong length","invalidFields":["roomSize","patches","coords"]}
