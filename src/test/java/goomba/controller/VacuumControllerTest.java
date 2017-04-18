@@ -10,9 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Scanner;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -42,14 +40,14 @@ public class VacuumControllerTest {
     private static final String JSON_RESPONSE_TEST_4 = getTestJson("invalid_vacuumResponse-Test_4.json");
 
     @Test
-    public void testVacuum_JSONrequest_JSONresponse() throws Exception {
+    public void testVacuum_validJSONRequests_givesCorrectValid_JSONResponse() throws Exception {
         testVacuum(JSON_REQUEST_TEST_1, JSON_RESPONSE_TEST_1);
         testVacuum(JSON_REQUEST_TEST_2, JSON_RESPONSE_TEST_2);
         testVacuum(JSON_REQUEST_TEST_3, JSON_RESPONSE_TEST_3);
     }
 
     @Test
-    public void testVacuum_BadJSONrequest_JSONresponse_IsError() throws Exception {
+    public void testVacuum_BadJSONRequest_JSONResponse_IsError() throws Exception {
         testVacuum(JSON_REQUEST_TEST_4, JSON_RESPONSE_TEST_4);
     }
 
