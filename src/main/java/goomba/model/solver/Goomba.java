@@ -14,9 +14,9 @@ import java.util.Set;
 public class Goomba {
 
     /**
-     * G
+     * Go is the service method to vacuum a room
      *
-     * @return VacuumResult
+     * @return VacuumResult containing the final position and th number of dirt patches vacuumed up
      */
     public VacuumResult go(Coords startPosition, Room room, String instructions) {
         Coords currentPosition = startPosition;
