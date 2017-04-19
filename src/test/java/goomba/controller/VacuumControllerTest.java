@@ -27,8 +27,9 @@ public class VacuumControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private static final String REST_URL = "/vacuum/";
+    private static final String REST_URL = "/vacuum";
 
+    //Valid requests/responses
     private static final String JSON_REQUEST_TEST_1 = getTestJson("vacuumRequest-Test_1.json");
     private static final String JSON_RESPONSE_TEST_1 = getTestJson("vacuumResponse-Test_1.json");
     private static final String JSON_REQUEST_TEST_2 = getTestJson("vacuumRequest-Test_2.json");
@@ -36,6 +37,7 @@ public class VacuumControllerTest {
     private static final String JSON_REQUEST_TEST_3 = getTestJson("vacuumRequest-Test_3.json");
     private static final String JSON_RESPONSE_TEST_3 = getTestJson("vacuumResponse-Test_3.json");
 
+    //Invalid requests/responses
     private static final String JSON_REQUEST_TEST_4 = getTestJson("invalid_vacuumRequest-Test_4.json");
     private static final String JSON_RESPONSE_TEST_4 = getTestJson("invalid_vacuumResponse-Test_4.json");
 
@@ -54,8 +56,9 @@ public class VacuumControllerTest {
     private void testVacuum(String jsonRequest, String expectedJsonResponse) throws Exception {
         mockMvc.perform(post(REST_URL).contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(jsonRequest).accept(MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(status().isOk()).andExpect(content().string(expectedJsonResponse));
+                .andExpect(status().isOk()).andExpect(content().json(expectedJsonResponse));
     }
+
 
     private static String getTestJson(String path) {
         File file = new File(VacuumControllerTest.class.getClassLoader().getResource(path).getFile());

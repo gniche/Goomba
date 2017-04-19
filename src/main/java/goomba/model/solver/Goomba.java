@@ -46,7 +46,7 @@ public class Goomba {
         return new VacuumResult(currentPosition, vacuumed.size());
     }
 
-    static void hoover(Coords currentPosition, Room room, Set<Coords> vacuumed){
+    static void hoover(Coords currentPosition, Room room, Set<Coords> vacuumed) {
         if (room.hoover(currentPosition)) {
             System.out.println("found some dirt!");
             vacuumed.add(currentPosition);

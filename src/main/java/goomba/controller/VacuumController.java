@@ -2,7 +2,8 @@ package goomba.controller;
 
 import goomba.controller.exception.ErrorResponse;
 import goomba.controller.exception.InvalidRequestException;
-import goomba.model.*;
+import goomba.model.VacuumRequest;
+import goomba.model.VacuumResult;
 import goomba.model.solver.Coords;
 import goomba.model.solver.Goomba;
 import goomba.model.solver.Room;
@@ -24,7 +25,7 @@ public class VacuumController {
     @Autowired
     Goomba goomba;
 
-    @RequestMapping(value = "/vacuum/", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE},
+    @RequestMapping(value = "/vacuum", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE},
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE})
     public ResponseEntity<VacuumResult> vacuum(@RequestBody VacuumRequest vacuumRequest) throws InvalidRequestException {
 
@@ -64,8 +65,8 @@ public class VacuumController {
 
     private static Set<Coords> toPatchCoords(int[][] patches) throws InvalidRequestException {
         Set<Coords> patchCoords = new HashSet<>(1);
-        for (int i = 0; i < patches.length ; i++) {
-            if (patches[i].length != 2){
+        for (int i = 0; i < patches.length; i++) {
+            if (patches[i].length != 2) {
                 throw new InvalidRequestException("Array wrong length, must be length 2.", "patch#" + i);
             }
             patchCoords.add(new Coords(patches[i][0], patches[i][1]));
