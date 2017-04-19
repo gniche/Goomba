@@ -1,6 +1,8 @@
 package goomba.model.solver;
 
 import goomba.model.VacuumResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -13,6 +15,8 @@ import java.util.Set;
 @Service
 public class Goomba {
 
+    private static Logger logger = LoggerFactory.getLogger(Goomba.class);
+
     /**
      * Go is the service method to vacuum a room
      *
@@ -20,7 +24,7 @@ public class Goomba {
      */
     public VacuumResult go(Coords startPosition, Room room, String instructions) {
         Coords currentPosition = startPosition;
-        System.out.println("Goomba startPosition:" + currentPosition);
+        logger.info("Goomba starting vacuum from startPosition: {}", currentPosition);
         Set<Coords> vacuumed = new HashSet<>();
         hoover(currentPosition, room, vacuumed);
         for (char direction : instructions.toUpperCase().toCharArray()) {
@@ -38,41 +42,42 @@ public class Goomba {
                     currentPosition = calculateXPosition(currentPosition, -1, room);
                     break;
                 default:
-                    System.out.print("Invalid input: '" + direction + "'. ignoring...");
+                    logger.warn("Invalid input: '{}'. ignoring...", direction);
             }
-            System.out.println("Goomba currentPosition:" + currentPosition);
+            logger.debug("Goomba currentPosition: {}", currentPosition);
             hoover(currentPosition, room, vacuumed);
         }
+        logger.info("Goomba finished vacuuming room, returning result.");
         return new VacuumResult(currentPosition, vacuumed.size());
     }
 
-    static void hoover(Coords currentPosition, Room room, Set<Coords> vacuumed) {
+    private static void hoover(Coords currentPosition, Room room, Set<Coords> vacuumed) {
         if (room.hoover(currentPosition)) {
-            System.out.println("found some dirt!");
+            logger.debug("found some dirt!");
             vacuumed.add(currentPosition);
         }
     }
 
-    static Coords calculateXPosition(Coords currentPosition, int movement, Room room) {
+    private static Coords calculateXPosition(Coords currentPosition, int movement, Room room) {
         int xCoord = calculatePosition(currentPosition.getX(), movement, room.getXSize());
         return new Coords(xCoord, currentPosition.getY());
     }
 
-    static Coords calculateYPosition(Coords currentPosition, int movement, Room room) {
+    private static Coords calculateYPosition(Coords currentPosition, int movement, Room room) {
         int yCoord = calculatePosition(currentPosition.getY(), movement, room.getYSize());
         return new Coords(currentPosition.getX(), yCoord);
     }
 
-    static int calculatePosition(int coord, int movement, int roomSize) {
+    private static int calculatePosition(int coord, int movement, int roomSize) {
         int coordNew = coord + movement;
         if (coordNew < 0) {
-            System.out.print("Goomba skids into the wall!");
+            logger.debug("Goomba skids into the wall!");
             return 0;
         } else if (coordNew >= roomSize) {
-            System.out.print("Goomba skids into the wall!");
+            logger.debug("Goomba skids into the wall!");
             return roomSize - 1;
         } else {
-            System.out.print("Goomba keeps on truckin'!");
+            logger.debug("Goomba keeps on truckin'!");
             return coordNew;
         }
     }

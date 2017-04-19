@@ -10,16 +10,20 @@ public class ErrorResponse{
     private String message;
     private Set<String> invalidFields;
 
+    public String getMessage() {
+        return message;
+    }
+
     public int getErrorCode() {
         return errorCode;
     }
 
-    public void setErrorCode(int errorCode) {
-        this.errorCode = errorCode;
+    public Set<String> getInvalidFields() {
+        return invalidFields;
     }
 
-    public String getMessage() {
-        return message;
+    public void setErrorCode(int errorCode) {
+        this.errorCode = errorCode;
     }
 
     public void setMessage(String message) {
@@ -28,10 +32,6 @@ public class ErrorResponse{
 
     public void setInvalidFields(Set<String> invalidFields) {
         this.invalidFields = invalidFields;
-    }
-
-    public Set<String> getInvalidFields() {
-        return invalidFields;
     }
 }
 

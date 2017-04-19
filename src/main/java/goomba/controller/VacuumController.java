@@ -7,6 +7,8 @@ import goomba.model.VacuumResult;
 import goomba.model.solver.Coords;
 import goomba.model.solver.Goomba;
 import goomba.model.solver.Room;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,13 +24,15 @@ import java.util.Set;
 @RestController
 public class VacuumController {
 
+    private static Logger logger = LoggerFactory.getLogger(VacuumController.class);
+
     @Autowired
     Goomba goomba;
 
     @RequestMapping(value = "/vacuum", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE},
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE})
     public ResponseEntity<VacuumResult> vacuum(@RequestBody VacuumRequest vacuumRequest) throws InvalidRequestException {
-
+        logger.debug("New vacuum request...");
         checkJSONFieldsValid(vacuumRequest);
         Set<Coords> patches = toPatchCoords(vacuumRequest.getPatches());
 
@@ -39,15 +43,17 @@ public class VacuumController {
     }
 
     @ExceptionHandler(InvalidRequestException.class)
-    public ResponseEntity<ErrorResponse> exceptionHandler(InvalidRequestException ex) {
+    public ResponseEntity<ErrorResponse> exceptionHandler(InvalidRequestException e) {
+        logger.error(e.getMessage(), e);
         ErrorResponse error = new ErrorResponse();
         error.setErrorCode(HttpStatus.PRECONDITION_FAILED.value());
-        error.setMessage(ex.getMessage());
-        error.setInvalidFields(ex.getInvalidFields());
+        error.setMessage(e.getMessage());
+        error.setInvalidFields(e.getInvalidFields());
         return new ResponseEntity<>(error, HttpStatus.OK);
     }
 
     private static void checkJSONFieldsValid(VacuumRequest vacuumRequest) throws InvalidRequestException {
+        logger.debug("Validating JSON Fields.");
         Set<String> invalidFields = new HashSet<>();
         if (vacuumRequest.getRoomSize() == null || vacuumRequest.getRoomSize().length != 2) {
             invalidFields.add("roomSize");
